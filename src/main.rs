@@ -10,6 +10,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     } else {
         course::get_course_info("2021-2022-1", "Tárgykód", "WEBPROGEG").await?;
     }
-    //calendar::write_courses_to_ics("");
+
+    calendar::write_courses_to_ics("");
+    
     Ok(())
 }
