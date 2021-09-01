@@ -54,7 +54,6 @@ pub fn read_csv_to_text(id: &str) -> Result<(), Box<dyn std::error::Error>> {
 
     for result in csv_reader.records() {
         let record = result?;
-        //println!("{:?}", record);
     }
 
     Ok(())
