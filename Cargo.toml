@@ -4,16 +4,19 @@ version = "0.0.1"
 authors = ["Balázs Zoltán <balazszoltan@student.elte.hu>"]
 edition = "2018"
 resolver = "2"
-build = "src/build.rs"
+build = "src/gui/build.rs"
 
 [dependencies]
+chrono = "0.4.19"
+csv = "1.1.6"
 reqwest = "0.11.4"
+table-extract = "0.2.2"
 # polars = "0.15.1"
-sixtyfps = "0.1.1"
+# sixtyfps = "0.1.1"
 tokio = { version = "1.10.1", features = ["full"] }
 
 [build-dependencies]
-sixtyfps-build = "0.1.1"
+# sixtyfps-build = "0.1.1"
 
 [[bin]]
 path = "src/main.rs"
