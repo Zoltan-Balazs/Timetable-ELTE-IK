@@ -1,7 +1,7 @@
 //sixtyfps::include_modules!();
 
 mod course;
-//mod calendar;
+mod calendar;
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -10,5 +10,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     } else {
         course::get_course_info("2021-2022-1", "Tárgykód", "WEBPROGEG").await?;
     }
+    //calendar::write_courses_to_ics("");
     Ok(())
 }
