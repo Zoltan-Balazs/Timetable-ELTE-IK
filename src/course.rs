@@ -1,11 +1,11 @@
+use csv::{Reader, WriterBuilder};
 use reqwest::Client;
+use std::path::Path;
 use table_extract::Table;
-use csv::WriterBuilder;
 
-pub async fn get_course_info(semester: &str, type_of_request: &str, id: &str) -> Result<(), reqwest::Error> {
+pub async fn get_course_info(semester: &str, type_of_request: &str, id: &str) -> Result<(), Box<dyn std::error::Error>> {
     let url = "http://to.ttk.elte.hu/test.php";
     let limit: i16 = 1000;
-
     let client = Client::new();
     let body = match type_of_request {
         "Tárgynév" => format!("melyik={}&felev={}&limit={}&targynev={}", "nevalapjan", semester, limit, id),
@@ -15,14 +15,14 @@ pub async fn get_course_info(semester: &str, type_of_request: &str, id: &str) ->
         _ => panic!("Request type {} incorrect!", type_of_request)
     };
 
-    let res = client
+    let response = client
         .post(url)
         .header("Content-Type", "application/x-www-form-urlencoded")
         .body(body)
         .send()
         .await?;
 
-    let text = res.text().await?;
+    let text = response.text().await?;
 
     match write_html_table_to_csv(&text, &id) {
         Ok(()) => Ok(()),
@@ -34,7 +34,6 @@ pub fn write_html_table_to_csv(response: &str, id: &str) -> Result<(), Box<dyn s
     let html_table = Table::find_first(&response).unwrap();
     let filename = format!("{}-{}.csv", id, chrono::Local::now().date());
     let mut csv_writer = WriterBuilder::new().from_path(filename)?;
-
     let mut data_vec: Vec<&String> = Vec::new();
 
     for row in &html_table {
@@ -47,4 +46,21 @@ pub fn write_html_table_to_csv(response: &str, id: &str) -> Result<(), Box<dyn s
 
     csv_writer.flush()?;
     Ok(())
+}
+
+pub fn read_csv_to_text(id: &str) -> Result<(), Box<dyn std::error::Error>> {
+    let filename = format!("{}-{}.csv", id, chrono::Local::now().date());
+    let mut reader = Reader::from_path(filename)?;
+
+    for result in reader.records() {
+        let record = result?;
+        println!("{:?}", record);
+    }
+
+    Ok(())
+}
+
+pub fn check_if_csv_exists(id: &str) -> bool {
+    let filename = format!("{}-{}.csv", id, chrono::Local::now().date());
+    Path::new(&filename).exists()
 }
