@@ -1,3 +1,3 @@
 fn main() {
-    // sixtyfps_build::compile("src/gui/main.60").unwrap();
+    sixtyfps_build::compile("src/gui/main.60").unwrap();
 }

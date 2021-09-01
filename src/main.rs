@@ -1,4 +1,4 @@
-//sixtyfps::include_modules!();
+sixtyfps::include_modules!();
 
 mod course;
 mod calendar;
@@ -12,6 +12,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     calendar::write_courses_to_ics("")?;
+
+    let app = App::new();
+    app.run();
 
     Ok(())
 }
