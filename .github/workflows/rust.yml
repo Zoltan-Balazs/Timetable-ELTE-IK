@@ -16,6 +16,11 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Install libxcb
+    - run: |
+           sudo apt-get install libxcb-xfixes0-dev
+           sudo apt-get install libxcb-shape0-dev
+           sudo apt-get install libxcb-util0-dev
     - name: Build
       run: cargo build --verbose
     - name: Run tests
